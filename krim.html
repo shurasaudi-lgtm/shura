@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>حاسبة اشتراك كريم - النسخة الاحترافية</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2ecc71, #1e8449); 
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px; /* تقليل الحواف لتناسب الجوال */
+            color: #333;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 22px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        
+        .progress-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease, background-color 0.5s ease;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .card {
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .card.status { grid-column: span 2; font-size: 16px; }
+        .card.wallet { background-color: #e8f4f8; color: #2980b9; }
+        .card.total-discount { background-color: #d6eaf8; color: #2471a3; }
+        .card.total-paid { background-color: #fadbd8; color: #c0392b; }
+        
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* للسماح بترتيب العناصر في الجوال */
+        }
+        input[type="number"] {
+            flex: 1;
+            min-width: 150px; /* ضمان عدم صغر الحقل جداً */
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn-add { background-color: #27ae60; flex: 2; white-space: nowrap; }
+        .btn-add:hover { background-color: #219653; }
+        
+        #mic-btn { background-color: #3498db; font-size: 20px; flex: 1; max-width: 60px; }
+        #mic-btn:hover { background-color: #2980b9; }
+        
+        .btn-export { background-color: #8e44ad; width: 100%; margin-top: 10px; }
+        .btn-export:hover { background-color: #9b59b6; }
+        
+        .btn-reset { background-color: #e74c3c; width: 100%; margin-top: 10px; }
+        .btn-reset:hover { background-color: #c0392b; }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+        .listening { background-color: #e74c3c !important; animation: pulse 1.5s infinite; }
+        
+        /* حاوية الجدول لتفعيل السحب الجانبي في الجوال */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* سحب ناعم للايفون */
+        }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; min-width: 450px; }
+        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; color: #333; white-space: nowrap; }
+        .delete-btn { background-color: #e74c3c; color: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; }
+
+        /* --- تخصيص شاشات الجوال الطولية (أقل من 600 بكسل) --- */
+        @media (max-width: 600px) {
+            .summary-cards {
+                grid-template-columns: 1fr; /* ترتيب البطاقات فوق بعضها */
+            }
+            .card.status {
+                grid-column: span 1;
+            }
+            .input-group {
+                flex-direction: row;
+            }
+            input[type="number"] {
+                width: 100%; /* الحقل يأخذ سطر كامل */
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>حاسبة كريم المتقدمة</h1>
+    <div class="subtitle">تكلفة الاشتراك: 350 ريال | رصيد المحفظة: 1100 ريال</div>
+    
+    <div class="progress-section">
+        <div class="progress-label">
+            <span>استرداد رأس المال (350 ريال)</span>
+            <span id="capital-text">0%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div id="capital-bar" class="progress-bar" style="width: 0%; background-color: #e67e22;"></div>
+        </div>
+
+        <div class="progress-label">
+            <span>استهلاك المحفظة (1100 ريال)</span>
+            <span id="wallet-text">0%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div id="wallet-bar" class="progress-bar" style="width: 0%; background-color: #3498db;"></div>
+        </div>
+    </div>
+    
+    <div class="summary-cards">
+        <div class="card status" id="card-status">جاري الحساب...</div>
+        <div class="card wallet" id="card-wallet">المتبقي بالمحفظة:<br>1100 ريال</div>
+        <div class="card total-discount" id="card-discount">مجموع خصوماتك (الربح):<br>0 ريال</div>
+        <div class="card total-paid" id="card-paid">دفعت من جيبك (للكباتن):<br>0 ريال</div>
+    </div>
+
+    <div class="input-group">
+        <input type="number" id="ride-price" placeholder="أدخل المشوار (مثال: 50)" min="1">
+        <button id="mic-btn" type="button" onclick="toggleDictation()" title="تشغيل الاستماع المستمر">🎤</button>
+        <button class="btn-add" onclick="addRide()">إضافة</button>
+    </div>
+
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>رقم</th>
+                    <th>إجمالي المشوار</th>
+                    <th>خصم المحفظة</th>
+                    <th>الدفع النقدي</th>
+                    <th>إجراء</th>
+                </tr>
+            </thead>
+            <tbody id="rides-table"></tbody>
+        </table>
+    </div>
+
+    <button class="btn-export" onclick="exportToCSV()">📥 تصدير السجل إلى Excel (CSV)</button>
+    <button class="btn-reset" onclick="resetData()">🗑️ مسح البيانات والبدء بشهر جديد</button>
+</div>
+
+<script>
+    const UPFRONT_COST = 350;
+    const WALLET_LIMIT = 1100;
+    const DISCOUNT_RATE = 0.80;
+    const PAID_RATE = 0.20;
+
+    let rides = JSON.parse(localStorage.getItem('careemSpecialDealV2')) || [];
+
+    function updateUI() {
+        let totalOriginal = 0, totalDiscountUsed = 0, totalPaidOutOfPocket = 0;
+        const tbody = document.getElementById('rides-table');
+        tbody.innerHTML = '';
+
+        rides.forEach((ride, index) => {
+            totalOriginal += ride.price;
+            totalDiscountUsed += ride.discount;
+            totalPaidOutOfPocket += ride.paid;
+
+            tbody.innerHTML += `<tr>
+                <td>${index + 1}</td>
+                <td>${ride.price.toFixed(2)}</td>
+                <td style="color: #2980b9; font-weight: bold;">${ride.discount.toFixed(2)}</td>
+                <td style="color: #c0392b;">${ride.paid.toFixed(2)}</td>
+                <td><button class="delete-btn" onclick="deleteRide(${index})">حذف</button></td>
+            </tr>`;
+        });
+
+        let walletRemaining = WALLET_LIMIT - totalDiscountUsed;
+        if (walletRemaining < 0) walletRemaining = 0;
+        
+        let netStatus = totalDiscountUsed - UPFRONT_COST;
+        const statusCard = document.getElementById('card-status');
+        const capitalBar = document.getElementById('capital-bar');
+        const capitalText = document.getElementById('capital-text');
+
+        if (netStatus < 0) {
+            statusCard.innerHTML = `المتبقي لتسترد رأس مالك:<br>${Math.abs(netStatus).toFixed(2)} ريال`;
+            statusCard.style.backgroundColor = '#fcf3cf';
+            statusCard.style.color = '#d35400';
+            
+            let capitalPercent = (totalDiscountUsed / UPFRONT_COST) * 100;
+            capitalBar.style.width = capitalPercent + '%';
+            capitalBar.style.backgroundColor = '#e67e22';
+            capitalText.innerText = Math.round(capitalPercent) + '%';
+        } else {
+            statusCard.innerHTML = `🎉 مبروك! أنت تربح الآن:<br>ربحك الصافي: ${netStatus.toFixed(2)} ريال`;
+            statusCard.style.backgroundColor = '#d5f5e3';
+            statusCard.style.color = '#27ae60';
+            
+            capitalBar.style.width = '100%';
+            capitalBar.style.backgroundColor = '#27ae60';
+            capitalText.innerText = 'تم الاسترداد 100%';
+        }
+
+        const walletBar = document.getElementById('wallet-bar');
+        let walletPercent = (totalDiscountUsed / WALLET_LIMIT) * 100;
+        if (walletPercent > 100) walletPercent = 100;
+        walletBar.style.width = walletPercent + '%';
+        document.getElementById('wallet-text').innerText = Math.round(walletPercent) + '% استُهلك';
+        
+        if (walletPercent >= 90) walletBar.style.backgroundColor = '#e74c3c'; 
+        else walletBar.style.backgroundColor = '#3498db';
+
+        document.getElementById('card-wallet').innerHTML = `المتبقي بالمحفظة:<br>${walletRemaining.toFixed(2)} ريال`;
+        document.getElementById('card-discount').innerHTML = `مجموع خصوماتك:<br>${totalDiscountUsed.toFixed(2)} ريال`;
+        document.getElementById('card-paid').innerHTML = `دفعت للكباتن:<br>${totalPaidOutOfPocket.toFixed(2)} ريال`;
+
+        localStorage.setItem('careemSpecialDealV2', JSON.stringify(rides));
+    }
+
+    function addRide() {
+        const input = document.getElementById('ride-price');
+        const price = parseFloat(input.value);
+        if (isNaN(price) || price <= 0) return;
+
+        let currentTotalDiscount = rides.reduce((sum, r) => sum + r.discount, 0);
+        let walletRemaining = WALLET_LIMIT - currentTotalDiscount;
+
+        let intendedDiscount = price * DISCOUNT_RATE;
+        let actualDiscount = 0;
+        let actualPaid = 0;
+
+        if (walletRemaining <= 0) {
+            actualDiscount = 0;
+            actualPaid = price; 
+            speakFeedback(`المحفظة فارغة، ستدفع ${price} ريال بالكامل.`);
+        } else if (intendedDiscount > walletRemaining) {
+            actualDiscount = walletRemaining; 
+            actualPaid = price - actualDiscount; 
+            speakFeedback(`نفدت المحفظة. تم خصم ${actualDiscount.toFixed(0)} ريال والباقي ${actualPaid.toFixed(0)} ريال نقداً.`);
+        } else {
+            actualDiscount = intendedDiscount;
+            actualPaid = price - actualDiscount;
+            speakFeedback(`تمت الإضافة. المتبقي في المحفظة ${(walletRemaining - actualDiscount).toFixed(0)} ريال.`);
+        }
+
+        rides.push({ price: price, discount: actualDiscount, paid: actualPaid });
+        input.value = ''; 
+        updateUI();
+    }
+
+    function speakFeedback(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ar-SA';
+            utterance.rate = 1.1; 
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    function deleteRide(index) {
+        if (confirm('هل أنت متأكد من حذف هذا المشوار؟')) {
+            rides.splice(index, 1);
+            updateUI();
+        }
+    }
+
+    function resetData() {
+        if (confirm('هل أنت متأكد من مسح البيانات للبدء بشهر جديد؟ يفضل تصديرها أولاً.')) {
+            rides = [];
+            updateUI();
+        }
+    }
+
+    function exportToCSV() {
+        if (rides.length === 0) {
+            alert('لا توجد بيانات لتصديرها.');
+            return;
+        }
+        
+        let csvContent = "\uFEFFرقم المشوار,إجمالي المشوار,الخصم من المحفظة,المدفوع نقداً\n";
+        rides.forEach((ride, index) => {
+            csvContent += `${index + 1},${ride.price.toFixed(2)},${ride.discount.toFixed(2)},${ride.paid.toFixed(2)}\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        
+        const date = new Date().toISOString().split('T')[0];
+        link.setAttribute("download", `Careem_Report_${date}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    document.getElementById('ride-price').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') addRide();
+    });
+
+    let isListening = false;
+    let recognition;
+
+    if (window.hasOwnProperty('webkitSpeechRecognition') || window.hasOwnProperty('SpeechRecognition')) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.lang = "ar-SA";
+
+        recognition.onresult = function (e) {
+            const transcript = e.results[e.results.length - 1][0].transcript;
+            const englishNumbers = transcript.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+            const numbers = englishNumbers.match(/\d+/g);
+            if (numbers) {
+                document.getElementById('ride-price').value = numbers.join('');
+                addRide();
+            }
+        };
+
+        recognition.onend = function() {
+            if (isListening) recognition.start();
+        };
+    }
+
+    function toggleDictation() {
+        if (!recognition) return alert("متصفحك لا يدعم الإدخال الصوتي.");
+        const micBtn = document.getElementById('mic-btn');
+
+        if (isListening) {
+            isListening = false;
+            recognition.stop();
+            micBtn.classList.remove('listening');
+        } else {
+            isListening = true;
+            recognition.start();
+            micBtn.classList.add('listening');
+        }
+    }
+
+    updateUI();
+</script>
+
+</body>
+</html>
