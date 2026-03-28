@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>حاسبة اشتراك البدوررر - النسخة الاحترافية</title>
+    <title>حاسبة البدور المتقدمة</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #2ecc71, #1e8449); 
             min-height: 100vh;
             margin: 0;
-            padding: 15px; /* تقليل الحواف لتناسب الجوال */
+            padding: 15px; 
             color: #333;
         }
         .container {
@@ -84,11 +84,11 @@
             display: flex;
             gap: 8px;
             margin-bottom: 20px;
-            flex-wrap: wrap; /* للسماح بترتيب العناصر في الجوال */
+            flex-wrap: wrap; 
         }
         input[type="number"] {
             flex: 1;
-            min-width: 150px; /* ضمان عدم صغر الحقل جداً */
+            min-width: 150px; 
             padding: 12px;
             border: 2px solid #bdc3c7;
             border-radius: 6px;
@@ -110,9 +110,6 @@
         #mic-btn { background-color: #3498db; font-size: 20px; flex: 1; max-width: 60px; }
         #mic-btn:hover { background-color: #2980b9; }
         
-        .btn-export { background-color: #8e44ad; width: 100%; margin-top: 10px; }
-        .btn-export:hover { background-color: #9b59b6; }
-        
         .btn-reset { background-color: #e74c3c; width: 100%; margin-top: 10px; }
         .btn-reset:hover { background-color: #c0392b; }
         
@@ -123,21 +120,19 @@
         }
         .listening { background-color: #e74c3c !important; animation: pulse 1.5s infinite; }
         
-        /* حاوية الجدول لتفعيل السحب الجانبي في الجوال */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch; /* سحب ناعم للايفون */
+            -webkit-overflow-scrolling: touch; 
         }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; min-width: 450px; }
         th, td { padding: 10px; text-align: center; border-bottom: 1px solid #ddd; }
         th { background-color: #f2f2f2; color: #333; white-space: nowrap; }
         .delete-btn { background-color: #e74c3c; color: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; }
 
-        /* --- تخصيص شاشات الجوال الطولية (أقل من 600 بكسل) --- */
         @media (max-width: 600px) {
             .summary-cards {
-                grid-template-columns: 1fr; /* ترتيب البطاقات فوق بعضها */
+                grid-template-columns: 1fr; 
             }
             .card.status {
                 grid-column: span 1;
@@ -146,7 +141,7 @@
                 flex-direction: row;
             }
             input[type="number"] {
-                width: 100%; /* الحقل يأخذ سطر كامل */
+                width: 100%; 
                 margin-bottom: 5px;
             }
         }
@@ -155,7 +150,7 @@
 <body>
 
 <div class="container">
-    <h1>حاسبة البدووور المتقدمة</h1>
+    <h1>حاسبة البدور المتقدمة</h1>
     <div class="subtitle">تكلفة الاشتراك: 350 ريال | رصيد المحفظة: 1100 ريال</div>
     
     <div class="progress-section">
@@ -204,7 +199,6 @@
         </table>
     </div>
 
-    <button class="btn-export" onclick="exportToCSV()">📥 تصدير السجل إلى Excel (CSV)</button>
     <button class="btn-reset" onclick="resetData()">🗑️ مسح البيانات والبدء بشهر جديد</button>
 </div>
 
@@ -326,34 +320,10 @@
     }
 
     function resetData() {
-        if (confirm('هل أنت متأكد من مسح البيانات للبدء بشهر جديد؟ يفضل تصديرها أولاً.')) {
+        if (confirm('هل أنت متأكد من مسح البيانات للبدء بشهر جديد؟')) {
             rides = [];
             updateUI();
         }
-    }
-
-    function exportToCSV() {
-        if (rides.length === 0) {
-            alert('لا توجد بيانات لتصديرها.');
-            return;
-        }
-        
-        let csvContent = "\uFEFFرقم المشوار,إجمالي المشوار,الخصم من المحفظة,المدفوع نقداً\n";
-        rides.forEach((ride, index) => {
-            csvContent += `${index + 1},${ride.price.toFixed(2)},${ride.discount.toFixed(2)},${ride.paid.toFixed(2)}\n`;
-        });
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        const url = URL.createObjectURL(blob);
-        link.setAttribute("href", url);
-        
-        const date = new Date().toISOString().split('T')[0];
-        link.setAttribute("download", `Careem_Report_${date}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
     }
 
     document.getElementById('ride-price').addEventListener('keypress', function (e) {
