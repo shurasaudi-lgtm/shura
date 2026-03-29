@@ -18,20 +18,11 @@
             --border-color: #e0e0e0;
         }
 
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-color);
-            margin: 0; padding: 20px; color: #333;
-            line-height: 1.6;
-        }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; color: #333; line-height: 1.6; }
 
         .container {
-            max-width: 850px;
-            margin: 0 auto;
-            background: var(--white);
-            padding: 30px 45px;
-            border-radius: 8px;
-            border: 5px solid var(--primary-green);
+            max-width: 850px; margin: 0 auto; background: var(--white); padding: 30px 45px;
+            border-radius: 8px; border: 5px solid var(--primary-green);
             box-shadow: inset 0 0 0 2px var(--gold-color), 0 15px 40px rgba(0,0,0,0.1);
             text-align: right;
         }
@@ -43,72 +34,50 @@
         .welcome-text p { color: #777; font-size: 0.95rem; margin-top: 0; margin-bottom: 15px; }
 
         .section-title {
-            background-color: #f4f7f4;
-            padding: 10px 15px;
-            border-right: 5px solid var(--primary-green);
-            margin: 20px 0 15px;
-            color: var(--primary-green);
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1rem;
+            background-color: #f4f7f4; padding: 10px 15px; border-right: 5px solid var(--primary-green);
+            margin: 20px 0 15px; color: var(--primary-green); font-weight: 700;
+            display: flex; justify-content: space-between; font-size: 1.1rem;
         }
-        .section-title:first-of-type { margin-top: 0; }
 
         .form-group { margin-bottom: 18px; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        
         label { display: block; margin-bottom: 5px; font-weight: 700; color: #444; }
         .en-label { font-size: 0.8rem; color: #999; display: block; font-weight: 400; }
 
-        input, select, textarea {
-            width: 100%; padding: 12px; border: 1px solid var(--border-color);
-            border-radius: 5px; font-family: 'Tajawal', sans-serif; font-size: 1rem;
-            box-sizing: border-box; background-color: #fafafa;
-        }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 5px; font-family: 'Tajawal', sans-serif; font-size: 1rem; box-sizing: border-box; background-color: #fafafa; }
 
         .btn-submit {
-            background: linear-gradient(135deg, var(--primary-green), #114022);
-            color: white; border: 1px solid var(--gold-color); padding: 18px; width: 100%;
-            font-size: 1.3rem; font-weight: 700; border-radius: 5px;
-            cursor: pointer; margin-top: 10px; transition: 0.3s;
+            background: linear-gradient(135deg, var(--primary-green), #114022); color: white; border: 1px solid var(--gold-color);
+            padding: 18px; width: 100%; font-size: 1.3rem; font-weight: 700; border-radius: 5px; cursor: pointer; margin-top: 10px; transition: 0.3s;
         }
         .btn-submit:hover { background: var(--gold-color); }
 
-        /* --- تصميم بطاقة الترحيب --- */
-        #successCard {
-            display: none; /* مخفي في البداية */
-            text-align: center;
-            padding: 40px 10px;
-        }
-
+        /* --- تنسيق بطاقة الترحيب المطورة --- */
+        #successCard { display: none; text-align: center; padding: 40px 10px; }
         .success-icon { font-size: 5rem; color: var(--gold-color); margin: 20px 0; }
         .welcome-msg { color: var(--primary-green); font-size: 2rem; font-weight: 700; margin-bottom: 10px; }
-        .sub-msg { color: #555; font-size: 1.2rem; margin-bottom: 30px; line-height: 1.8; }
+        
+        /* تصميم الرقم المرجعي */
+        .ref-container { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; color: #444; }
+        #refID { color: var(--error-red); font-size: 1.8rem; border-bottom: 2px dashed var(--error-red); padding: 0 5px; }
 
-        .btn-print {
-            background: var(--primary-green); color: white; padding: 15px 40px;
-            font-size: 1.1rem; border-radius: 5px; cursor: pointer; border: 1px solid var(--gold-color);
-            font-weight: 700;
-        }
+        .sub-msg { color: #555; font-size: 1.2rem; margin-bottom: 30px; line-height: 1.8; }
+        .btn-print { background: var(--primary-green); color: white; padding: 15px 40px; font-size: 1.1rem; border-radius: 5px; cursor: pointer; border: 1px solid var(--gold-color); font-weight: 700; }
 
         #status-error { display: none; padding: 15px; margin-top: 15px; border-radius: 5px; text-align: center; color: var(--error-red); background: #fdeaea; font-weight: 700; }
-
         footer { text-align: center; padding: 30px 20px; color: #888; font-size: 0.85rem; }
 
         @media print {
-            .btn-submit, .btn-print, footer, #successCard .success-icon { display: none !important; }
+            .btn-submit, .btn-print, footer, .success-icon { display: none !important; }
             .container { border: none; box-shadow: none; }
             #successCard { display: block !important; }
+            #refID { border: none; } /* إزالة الخط المقطع عند الطباعة */
         }
-
-        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div class="container">
-        
         <div id="formContainer">
             <div class="header-section">
                 <img src="logo.png" alt="مجلس الشورى" class="logo-img">
@@ -125,7 +94,7 @@
                 <div class="form-group">
                     <label>اسم الدولة <span class="en-label">Country Name</span></label>
                     <select name="Country_Name" required>
-                        <option value="">اختر الدولة / Select Country...</option>
+                        <option value="">اختر الدولة...</option>
                         <option value="Jordan">الأردن - Jordan</option>
                         <option value="UAE">الإمارات العربية المتحدة - UAE</option>
                         <option value="Bahrain">البحرين - Bahrain</option>
@@ -180,7 +149,7 @@
                 <div class="section-title"><span>التواصل</span><span>Contact</span></div>
                 <div class="form-grid">
                     <div class="form-group"><label>البريد <span class="en-label">Email</span></label><input type="email" name="Email" required></div>
-                    <div class="form-group"><label>الهاتف <span class="en-label">Phone</span></label><input type="tel" name="Phone" required></div>
+                    <div class="form-group"><label>الهاتف <span class="en-label">Phone</span></label><input type="tel" name="Phone" id="phoneInput" placeholder="+966..." required></div>
                 </div>
 
                 <button type="submit" class="btn-submit" id="submitBtn">تأكيد تسجيل الوفد | Confirm Registration</button>
@@ -192,11 +161,12 @@
             <img src="logo2.png" alt="مجلس الشورى" class="logo-img">
             <div class="success-icon">✓</div>
             <div class="welcome-msg">تم تسجيل الوفد بنجاح</div>
+            
+            <div class="ref-container">الرقم المرجعي: <span id="refID">0000</span></div>
+
             <div class="sub-msg">
                 مجلس الشورى بالمملكة العربية السعودية يرحب بوفدكم الكريم<br>
                 ونتمنى لكم إقامة طيبة في بلدكم الثاني.
-                <br><br>
-                <small style="color:#888">The Saudi Shura Council welcomes your esteemed delegation.</small>
             </div>
             <button type="button" class="btn-print" onclick="window.print()">🖨️ طباعة بطاقة التسجيل | Print Card</button>
         </div>
@@ -212,47 +182,43 @@
         const form = document.getElementById("registrationForm");
         const formContainer = document.getElementById("formContainer");
         const successCard = document.getElementById("successCard");
+        const refDisplay = document.getElementById("refID");
+        const phoneInput = document.getElementById("phoneInput");
         const statusError = document.getElementById("status-error");
         const btn = document.getElementById("submitBtn");
 
-        async function handleSubmit(event) {
-            event.preventDefault();
-            
-            // فحص الإنترنت
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
             if (!navigator.onLine) {
                 statusError.innerHTML = "خطأ: تأكد من اتصالك بالإنترنت.";
                 statusError.style.display = "block";
                 return;
             }
 
+            // استخراج آخر 4 أرقام من الجوال للرقم المرجعي
+            const phoneVal = phoneInput.value.replace(/\s/g, ''); // إزالة المسافات
+            const lastFour = phoneVal.slice(-4);
+            refDisplay.innerText = lastFour; // وضعها في البطاقة
+
             btn.disabled = true;
             btn.innerHTML = "جاري الإرسال... | Sending...";
             statusError.style.display = "none";
 
-            const data = new FormData(event.target);
-            
-            fetch(event.target.action, {
-                method: 'POST',
-                body: data,
-                headers: { 'Accept': 'application/json' }
-            }).then(response => {
+            const data = new FormData(form);
+            try {
+                const response = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
                 if (response.ok) {
-                    // الانتقال لرسالة الترحيب
                     formContainer.style.display = "none";
                     successCard.style.display = "block";
                     window.scrollTo(0, 0);
-                } else {
-                    throw new Error("Server Error");
-                }
-            }).catch(error => {
-                statusError.innerHTML = "حدث خطأ أثناء الإرسال. يرجى التأكد من تفعيل خدمة Formspree والمحاولة ثانية.";
+                } else { throw new Error(); }
+            } catch (error) {
+                statusError.innerHTML = "حدث خطأ أثناء الإرسال. حاول ثانية.";
                 statusError.style.display = "block";
                 btn.disabled = false;
                 btn.innerHTML = "تأكيد تسجيل الوفد | Confirm Registration";
-            });
-        }
-
-        form.addEventListener("submit", handleSubmit);
+            }
+        });
     </script>
 </body>
 </html>
