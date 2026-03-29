@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الوفود - مجلس الشورى السعودي | Delegation Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+    <style>
+        :root {
+            --primary-green: #1A5E32; /* الأخضر السعودي الرسمي */
+            --gold-color: #c5a059;     /* الذهبي الملكي */
+            --bg-color: #f0f2f0;
+            --white: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0; padding: 40px 20px; color: #333;
+            line-height: 1.6;
+        }
+
+        /* حاوية الاستمارة ببرواز رسمي مزدوج (أخضر خارجي وذهبي داخلي) */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 50px 45px;
+            border-radius: 8px;
+            border: 5px solid var(--primary-green);
+            box-shadow: inset 0 0 0 2px var(--gold-color), 0 15px 40px rgba(0,0,0,0.1);
+            text-align: right;
+        }
+
+        .header-section { text-align: center; margin-bottom: 40px; }
+
+        .logo-img { 
+            max-width: 100%; 
+            width: 350px; 
+            height: auto;
+            margin-bottom: 25px;
+        }
+
+        .welcome-text h2 { color: var(--primary-green); margin-bottom: 5px; font-size: 1.8rem; font-weight: 700; }
+        .welcome-text p { color: #777; font-size: 1rem; margin-top: 0; }
+
+        /* عناوين الأقسام بنمط رسمي */
+        .section-title {
+            background-color: #f4f7f4;
+            padding: 12px 20px;
+            border-right: 5px solid var(--primary-green);
+            margin: 35px 0 20px;
+            color: var(--primary-green);
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-group { margin-bottom: 25px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        
+        label { display: block; margin-bottom: 8px; font-weight: 700; color: #444; }
+        .en-label { font-size: 0.8rem; color: #999; display: block; font-weight: 400; margin-top: 2px; }
+
+        input, select, textarea {
+            width: 100%; padding: 14px; border: 1px solid var(--border-color);
+            border-radius: 5px; font-family: 'Tajawal', sans-serif; font-size: 1rem;
+            box-sizing: border-box; background-color: #fafafa; transition: all 0.3s ease;
+        }
+
+        /* تقصير عرض مربعات أرقام الجوازات والعدد لتكون متناسقة */
+        .short-input {
+            max-width: 250px; 
+        }
+
+        /* لضمان اللغة الإنجليزية في التاريخ من اليسار لليمين */
+        .en-input { direction: ltr !important; text-align: left !important; }
+
+        input:focus, select:focus, textarea:focus { 
+            border-color: var(--gold-color); 
+            background-color: #fff;
+            outline: none; 
+            box-shadow: 0 0 8px rgba(197, 160, 89, 0.2);
+        }
+
+        /* زر الإرسال بنمط ملكي */
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary-green), #114022);
+            color: white; border: 1px solid var(--gold-color); padding: 22px; width: 100%;
+            font-size: 1.4rem; font-weight: 700; border-radius: 5px;
+            cursor: pointer; margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(26, 94, 50, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover { 
+            background: var(--gold-color); 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 160, 89, 0.4);
+        }
+
+        #status { display: none; padding: 25px; margin-top: 25px; border-radius: 5px; text-align: center; font-weight: 700; }
+        #status.success { background-color: #e6f4ea; color: #1e7e34; border: 1px solid #c3e6cb; }
+
+        footer { text-align: center; padding: 50px 20px; color: #666; font-size: 0.95rem; }
+
+        @media (max-width: 768px) { 
+            .form-grid { grid-template-columns: 1fr; } 
+            .short-input { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-section">
+            <img src="logo.png" alt="مجلس الشورى السعودي" class="logo-img">
+            <div class="welcome-text">
+                <h2>استمارة تسجيل الوفود البرلمانية</h2>
+                <p>Parliamentary Delegation Registration Form</p>
+            </div>
+        </div>
+
+        <form id="registrationForm" action="https://formspree.io/f/xojpedgz" method="POST">
+            
+            <div class="section-title">
+                <span>بيانات الدولة</span>
+                <span>Country Details</span>
+            </div>
+
+            <div class="form-group">
+                <label>اسم الدولة <span class="en-label">Country Name</span></label>
+                <select name="اسم_الدولة_Country" required>
+                    <option value="">اختر الدولة / Select Country...</option>
+                    <option value="Saudi Arabia">المملكة العربية السعودية - Saudi Arabia</option>
+                    <option value="Jordan">الأردن - Jordan</option>
+                    <option value="UAE">الإمارات العربية المتحدة - UAE</option>
+                    <option value="Bahrain">البحرين - Bahrain</option>
+                    <option value="Tunisia">تونس - Tunisia</option>
+                    <option value="Algeria">الجزائر - Algeria</option>
+                    <option value="Egypt">مصر - Egypt</option>
+                    <option value="Morocco">المغرب - Morocco</option>
+                    <option value="Oman">سلطنة عمان - Oman</option>
+                    <option value="Qatar">قطر - Qatar</option>
+                    <option value="Kuwait">الكويت - Kuwait</option>
+                    <option value="Palestine">فلسطين - Palestine</option>
+                    <option value="Iraq">العراق - Iraq</option>
+                </select>
+            </div>
+
+            <div class="section-title">
+                <span>بيانات رئيس الوفد</span>
+                <span>Head of Delegation</span>
+            </div>
+
+            <div class="form-group">
+                <label>الاسم الكامل لرئيس الوفد <span class="en-label">Head of Delegation Full Name</span></label>
+                <input type="text" name="اسم_رئيس_الوفد" placeholder="Hon. Mr." required>
+            </div>
+
+            <div class="form-group">
+                <label>رقم جواز السفر لرئيس الوفد <span class="en-label">Passport Number (Head)</span></label>
+                <input type="text" name="جواز_رئيس_الوفد" class="short-input" required>
+            </div>
+
+            <div class="section-title">
+                <span>بيانات الوفد المرافق</span>
+                <span>Accompanying Members</span>
+            </div>
+
+            <div class="form-group">
+                <label>عدد أعضاء الوفد المرافق <span class="en-label">Number of Members</span></label>
+                <input type="number" name="عدد_المرافقين" min="0" class="short-input" required>
+            </div>
+
+            <div class="form-group">
+                <label>قائمة أسماء وأرقام جوازات الوفد المرافق <span class="en-label">Names & Passport Numbers</span></label>
+                <textarea name="قائمة_الوفد_المرافق" rows="5" placeholder="1. الاسم الكامل - رقم الجواز" required></textarea>
+            </div>
+
+            <div class="section-title">
+                <span>تفاصيل الوصول والاستقبال</span>
+                <span>Arrival & Reception</span>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>تاريخ ووقت الوصول المتوقع <span class="en-label">Arrival Date & Time</span></label>
+                    <input type="text" id="arrival_date" name="موعد_الوصول_المتوقع" class="en-input" placeholder="YYYY-MM-DD HH:MM" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم الرحلة وجهة القدوم <span class="en-label">Flight Number & Origin</span></label>
+                    <input type="text" name="رقم_الرحلة" placeholder="SV 123" required>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <span>معلومات التواصل الرسمية</span>
+                <span>Contact Information</span>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>البريد الإلكتروني الرسمي <span class="en-label">Official Email</span></label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم هاتف التواصل <span class="en-label">Contact Phone Number</span></label>
+                    <input type="tel" name="phone" placeholder="+966..." required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">تأكيد تسجيل الوفد | Confirm Registration</button>
+            <div id="status"></div>
+        </form>
+    </div>
+
+    <footer>
+        جميع الحقوق محفوظة &copy; 2026 مجلس الشورى السعودي - المملكة العربية السعودية<br>
+        Shura Council - Kingdom of Saudi Arabia
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // تفعيل التقويم باللغة الإنجليزية حصراً
+        flatpickr("#arrival_date", { 
+            enableTime: true, 
+            dateFormat: "Y-m-d H:i", 
+            time_24hr: true,
+            locale: "default" 
+        });
+
+        // كود الإرسال
+        var form = document.getElementById("registrationForm");
+        async function handleSubmit(event) {
+          event.preventDefault();
+          var status = document.getElementById("status");
+          var btn = document.getElementById("submitBtn");
+          var data = new FormData(event.target);
+          
+          btn.innerHTML = "جاري الإرسال... | Sending...";
+          btn.disabled = true;
+
+          fetch(event.target.action, {
+            method: form.method,
+            body: data,
+            headers: { 'Accept': 'application/json' }
+          }).then(response => {
+            if (response.ok) {
+              status.innerHTML = "تم إرسال طلب التسجيل بنجاح!<br>Registration Successful!";
+              status.className = "success";
+              status.style.display = "block";
+              form.reset();
+              btn.style.display = "none";
+            } else {
+              status.innerHTML = "حدث خطأ في الإرسال. يرجى المحاولة مجدداً.";
+              status.className = "error";
+              status.style.display = "block";
+              btn.disabled = false;
+              btn.innerHTML = "تأكيد تسجيل الوفد";
+            }
+          }).catch(error => {
+            status.innerHTML = "فشل الاتصال بالخادم. يرجى التحقق من الإنترنت.";
+            status.style.display = "block";
+            btn.disabled = false;
+          });
+        }
+        form.addEventListener("submit", handleSubmit)
+    </script>
+</body>
+</html>
