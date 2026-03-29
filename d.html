@@ -10,10 +10,11 @@
     
     <style>
         :root {
-            --primary-green: #1A5E32; /* الأخضر السعودي الرسمي */
-            --gold-color: #c5a059;     /* الذهبي الملكي */
+            --primary-green: #1A5E32;
+            --gold-color: #c5a059;
             --bg-color: #f0f2f0;
             --white: #ffffff;
+            --error-red: #c53030;
             --border-color: #e0e0e0;
         }
 
@@ -24,7 +25,6 @@
             line-height: 1.6;
         }
 
-        /* حاوية الاستمارة ببرواز رسمي مزدوج (أخضر خارجي وذهبي داخلي) */
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -37,18 +37,11 @@
         }
 
         .header-section { text-align: center; margin-bottom: 40px; }
-
-        .logo-img { 
-            max-width: 100%; 
-            width: 350px; 
-            height: auto;
-            margin-bottom: 25px;
-        }
+        .logo-img { max-width: 100%; width: 350px; height: auto; margin-bottom: 25px; }
 
         .welcome-text h2 { color: var(--primary-green); margin-bottom: 5px; font-size: 1.8rem; font-weight: 700; }
         .welcome-text p { color: #777; font-size: 1rem; margin-top: 0; }
 
-        /* عناوين الأقسام بنمط رسمي */
         .section-title {
             background-color: #f4f7f4;
             padding: 12px 20px;
@@ -64,54 +57,43 @@
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         
         label { display: block; margin-bottom: 8px; font-weight: 700; color: #444; }
-        .en-label { font-size: 0.8rem; color: #999; display: block; font-weight: 400; margin-top: 2px; }
+        .en-label { font-size: 0.8rem; color: #999; display: block; font-weight: 400; }
 
         input, select, textarea {
             width: 100%; padding: 14px; border: 1px solid var(--border-color);
             border-radius: 5px; font-family: 'Tajawal', sans-serif; font-size: 1rem;
-            box-sizing: border-box; background-color: #fafafa; transition: all 0.3s ease;
+            box-sizing: border-box; background-color: #fafafa;
         }
 
-        /* تقصير عرض مربعات أرقام الجوازات والعدد لتكون متناسقة */
-        .short-input {
-            max-width: 250px; 
-        }
-
-        /* لضمان اللغة الإنجليزية في التاريخ من اليسار لليمين */
+        .short-input { max-width: 250px; }
         .en-input { direction: ltr !important; text-align: left !important; }
 
-        input:focus, select:focus, textarea:focus { 
-            border-color: var(--gold-color); 
-            background-color: #fff;
-            outline: none; 
-            box-shadow: 0 0 8px rgba(197, 160, 89, 0.2);
-        }
+        input:focus, select:focus, textarea:focus { border-color: var(--gold-color); outline: none; }
 
-        /* زر الإرسال بنمط ملكي */
         .btn-submit {
             background: linear-gradient(135deg, var(--primary-green), #114022);
             color: white; border: 1px solid var(--gold-color); padding: 22px; width: 100%;
             font-size: 1.4rem; font-weight: 700; border-radius: 5px;
-            cursor: pointer; margin-top: 30px;
-            box-shadow: 0 5px 15px rgba(26, 94, 50, 0.3);
-            transition: all 0.3s ease;
+            cursor: pointer; margin-top: 30px; transition: all 0.3s ease;
         }
 
-        .btn-submit:hover { 
-            background: var(--gold-color); 
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(197, 160, 89, 0.4);
-        }
+        .btn-submit:hover { background: var(--gold-color); transform: translateY(-2px); }
 
-        #status { display: none; padding: 25px; margin-top: 25px; border-radius: 5px; text-align: center; font-weight: 700; }
+        /* تنسيق رسائل الحالة */
+        #status { 
+            display: none; 
+            padding: 20px; 
+            margin-top: 25px; 
+            border-radius: 5px; 
+            text-align: center; 
+            font-weight: 700; 
+        }
         #status.success { background-color: #e6f4ea; color: #1e7e34; border: 1px solid #c3e6cb; }
+        #status.error { background-color: #fdeaea; color: var(--error-red); border: 1px solid #feb2b2; }
 
         footer { text-align: center; padding: 50px 20px; color: #666; font-size: 0.95rem; }
 
-        @media (max-width: 768px) { 
-            .form-grid { grid-template-columns: 1fr; } 
-            .short-input { max-width: 100%; }
-        }
+        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .short-input { max-width: 100%; } }
     </style>
 </head>
 <body>
@@ -140,15 +122,11 @@
                     <option value="Jordan">الأردن - Jordan</option>
                     <option value="UAE">الإمارات العربية المتحدة - UAE</option>
                     <option value="Bahrain">البحرين - Bahrain</option>
-                    <option value="Tunisia">تونس - Tunisia</option>
-                    <option value="Algeria">الجزائر - Algeria</option>
                     <option value="Egypt">مصر - Egypt</option>
                     <option value="Morocco">المغرب - Morocco</option>
                     <option value="Oman">سلطنة عمان - Oman</option>
                     <option value="Qatar">قطر - Qatar</option>
                     <option value="Kuwait">الكويت - Kuwait</option>
-                    <option value="Palestine">فلسطين - Palestine</option>
-                    <option value="Iraq">العراق - Iraq</option>
                 </select>
             </div>
 
@@ -158,12 +136,12 @@
             </div>
 
             <div class="form-group">
-                <label>الاسم الكامل لرئيس الوفد <span class="en-label">Head of Delegation Full Name</span></label>
+                <label>الاسم الكامل لرئيس الوفد <span class="en-label">Full Name</span></label>
                 <input type="text" name="اسم_رئيس_الوفد" placeholder="Hon. Mr." required>
             </div>
 
             <div class="form-group">
-                <label>رقم جواز السفر لرئيس الوفد <span class="en-label">Passport Number (Head)</span></label>
+                <label>رقم جواز السفر لرئيس الوفد <span class="en-label">Passport Number</span></label>
                 <input type="text" name="جواز_رئيس_الوفد" class="short-input" required>
             </div>
 
@@ -220,30 +198,31 @@
     </div>
 
     <footer>
-        جميع الحقوق محفوظة &copy; 2026 مجلس الشورى السعودي - المملكة العربية السعودية<br>
-        Shura Council - Kingdom of Saudi Arabia
+        جميع الحقوق محفوظة &copy; 2026 مجلس الشورى السعودي - المملكة العربية السعودية
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-        // تفعيل التقويم باللغة الإنجليزية حصراً
-        flatpickr("#arrival_date", { 
-            enableTime: true, 
-            dateFormat: "Y-m-d H:i", 
-            time_24hr: true,
-            locale: "default" 
-        });
+        flatpickr("#arrival_date", { enableTime: true, dateFormat: "Y-m-d H:i", time_24hr: true });
 
-        // كود الإرسال
         var form = document.getElementById("registrationForm");
+        
         async function handleSubmit(event) {
           event.preventDefault();
           var status = document.getElementById("status");
           var btn = document.getElementById("submitBtn");
           var data = new FormData(event.target);
           
+          // إخفاء أي رسالة سابقة
+          status.style.display = "none";
           btn.innerHTML = "جاري الإرسال... | Sending...";
           btn.disabled = true;
+
+          // التحقق من الإنترنت قبل الإرسال
+          if (!navigator.onLine) {
+              showError("تعذر التسجيل بسبب عدم وجود اتصال بالإنترنت. يرجى التأكد من اتصالك والمحاولة مرة أخرى.");
+              return;
+          }
 
           fetch(event.target.action, {
             method: form.method,
@@ -257,17 +236,20 @@
               form.reset();
               btn.style.display = "none";
             } else {
-              status.innerHTML = "حدث خطأ في الإرسال. يرجى المحاولة مجدداً.";
+              showError("حدث خطأ في الخادم. يرجى المحاولة لاحقاً.");
+            }
+          }).catch(error => {
+              // هذا الجزء يعمل في حال انقطع الاتصال أثناء الإرسال
+              showError("عذراً، تعذر الاتصال بالخادم. تأكد من جودة الإنترنت لديك.");
+          });
+
+          function showError(msg) {
+              status.innerHTML = msg;
               status.className = "error";
               status.style.display = "block";
               btn.disabled = false;
-              btn.innerHTML = "تأكيد تسجيل الوفد";
-            }
-          }).catch(error => {
-            status.innerHTML = "فشل الاتصال بالخادم. يرجى التحقق من الإنترنت.";
-            status.style.display = "block";
-            btn.disabled = false;
-          });
+              btn.innerHTML = "تأكيد تسجيل الوفد | Confirm Registration";
+          }
         }
         form.addEventListener("submit", handleSubmit)
     </script>
