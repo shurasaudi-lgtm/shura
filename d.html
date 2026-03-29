@@ -18,14 +18,31 @@
             --border-color: #e0e0e0;
         }
 
-        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; color: #333; line-height: 1.6; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0; padding: 20px; color: #333;
+            line-height: 1.6;
+        }
 
         .container {
-            max-width: 850px; margin: 0 auto; background: var(--white); padding: 30px 45px;
-            border-radius: 8px; border: 5px solid var(--primary-green);
+            max-width: 850px; margin: 0 auto; background: var(--white);
+            padding: 30px 45px; border-radius: 8px;
+            border: 5px solid var(--primary-green);
             box-shadow: inset 0 0 0 2px var(--gold-color), 0 15px 40px rgba(0,0,0,0.1);
-            text-align: right;
         }
+
+        /* --- تنسيق بوابة الدخول --- */
+        #accessGate { text-align: center; padding: 60px 20px; }
+        .pass-input {
+            width: 220px; padding: 15px; font-size: 1.8rem; text-align: center;
+            letter-spacing: 8px; border: 2px solid var(--gold-color);
+            border-radius: 10px; margin-bottom: 20px; outline: none;
+            background: #fdfdfd; font-weight: bold;
+        }
+
+        /* --- تنسيق الاستمارة وبقية الأقسام --- */
+        #mainContent, #successCard { display: none; } /* مخفية في البداية */
 
         .header-section { text-align: center; margin-bottom: 15px; }
         .logo-img { max-width: 100%; width: 300px; height: auto; margin-bottom: 10px; }
@@ -41,44 +58,58 @@
 
         .form-group { margin-bottom: 18px; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
         label { display: block; margin-bottom: 5px; font-weight: 700; color: #444; }
         .en-label { font-size: 0.8rem; color: #999; display: block; font-weight: 400; }
 
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 5px; font-family: 'Tajawal', sans-serif; font-size: 1rem; box-sizing: border-box; background-color: #fafafa; }
+        input, select, textarea {
+            width: 100%; padding: 12px; border: 1px solid var(--border-color);
+            border-radius: 5px; font-family: 'Tajawal', sans-serif; font-size: 1rem;
+            box-sizing: border-box; background-color: #fafafa;
+        }
 
         .btn-submit {
-            background: linear-gradient(135deg, var(--primary-green), #114022); color: white; border: 1px solid var(--gold-color);
-            padding: 18px; width: 100%; font-size: 1.3rem; font-weight: 700; border-radius: 5px; cursor: pointer; margin-top: 10px; transition: 0.3s;
+            background: linear-gradient(135deg, var(--primary-green), #114022);
+            color: white; border: 1px solid var(--gold-color); padding: 18px; width: 100%;
+            font-size: 1.3rem; font-weight: 700; border-radius: 5px; cursor: pointer;
+            margin-top: 10px; transition: 0.3s;
         }
-        .btn-submit:hover { background: var(--gold-color); }
+        .btn-submit:hover { background: var(--gold-color); transform: translateY(-2px); }
 
-        /* --- تنسيق بطاقة الترحيب المطورة --- */
-        #successCard { display: none; text-align: center; padding: 40px 10px; }
+        /* --- تنسيق بطاقة الترحيب --- */
         .success-icon { font-size: 5rem; color: var(--gold-color); margin: 20px 0; }
         .welcome-msg { color: var(--primary-green); font-size: 2rem; font-weight: 700; margin-bottom: 10px; }
-        
-        /* تصميم الرقم المرجعي */
-        .ref-container { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; color: #444; }
-        #refID { color: var(--error-red); font-size: 1.8rem; border-bottom: 2px dashed var(--error-red); padding: 0 5px; }
-
+        .ref-container { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: #444; }
+        #refID { color: var(--error-red); border-bottom: 2px dashed var(--error-red); padding: 0 5px; }
         .sub-msg { color: #555; font-size: 1.2rem; margin-bottom: 30px; line-height: 1.8; }
-        .btn-print { background: var(--primary-green); color: white; padding: 15px 40px; font-size: 1.1rem; border-radius: 5px; cursor: pointer; border: 1px solid var(--gold-color); font-weight: 700; }
 
         #status-error { display: none; padding: 15px; margin-top: 15px; border-radius: 5px; text-align: center; color: var(--error-red); background: #fdeaea; font-weight: 700; }
+
         footer { text-align: center; padding: 30px 20px; color: #888; font-size: 0.85rem; }
 
         @media print {
-            .btn-submit, .btn-print, footer, .success-icon { display: none !important; }
-            .container { border: none; box-shadow: none; }
+            .btn-submit, footer, .success-icon, #accessGate { display: none !important; }
+            .container { border: none; box-shadow: none; padding: 0; }
             #successCard { display: block !important; }
-            #refID { border: none; } /* إزالة الخط المقطع عند الطباعة */
         }
+
+        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div id="formContainer">
+        
+        <div id="accessGate">
+            <img src="logo.png" alt="مجلس الشورى" class="logo-img">
+            <h2 style="color: var(--primary-green)">نظام تسجيل الوفود</h2>
+            <p>يرجى إدخال رمز الدخول المخصص للوفد للمتابعة</p>
+            <input type="password" id="passCode" class="pass-input" placeholder="••••" maxlength="4">
+            <div id="passError" style="color: var(--error-red); display: none; margin-bottom: 15px; font-weight: bold;">الرمز غير صحيح، يرجى المحاولة ثانية</div>
+            <button type="button" onclick="checkCode()" class="btn-submit" style="width: 200px;">دخول</button>
+        </div>
+
+        <div id="mainContent">
             <div class="header-section">
                 <img src="logo.png" alt="مجلس الشورى" class="logo-img">
                 <div class="welcome-text">
@@ -93,7 +124,7 @@
                 <div class="section-title"><span>بيانات الدولة</span><span>Country Details</span></div>
                 <div class="form-group">
                     <label>اسم الدولة <span class="en-label">Country Name</span></label>
-                    <select name="Country_Name" required>
+                    <select name="اسم_الدولة" required>
                         <option value="">اختر الدولة...</option>
                         <option value="Jordan">الأردن - Jordan</option>
                         <option value="UAE">الإمارات العربية المتحدة - UAE</option>
@@ -123,33 +154,45 @@
                 <div class="section-title"><span>بيانات رئيس الوفد</span><span>Head of Delegation</span></div>
                 <div class="form-group">
                     <label>الاسم الكامل <span class="en-label">Full Name</span></label>
-                    <input type="text" name="Head_Name" required>
+                    <input type="text" name="اسم_رئيس_الوفد" required>
                 </div>
                 <div class="form-group">
                     <label>رقم الجواز <span class="en-label">Passport Number</span></label>
-                    <input type="text" name="Passport" style="max-width:250px" required>
+                    <input type="text" name="جواز_رئيس_الوفد" style="max-width:250px" required>
                 </div>
 
                 <div class="section-title"><span>بيانات الوفد المرافق</span><span>Members</span></div>
                 <div class="form-group">
                     <label>عدد المرافقين <span class="en-label">Number of Members</span></label>
-                    <input type="number" name="Members_Count" min="0" style="max-width:150px" required>
+                    <input type="number" name="عدد_المرافقين" min="0" style="max-width:150px" required>
                 </div>
                 <div class="form-group">
-                    <label>الأسماء والجوازات <span class="en-label">Names & Passports</span></label>
-                    <textarea name="Members_List" rows="3" required></textarea>
+                    <label>الأسماء وأرقام الجوازات <span class="en-label">Names & Passports</span></label>
+                    <textarea name="قائمة_المرافقين" rows="4" placeholder="مثال: 1. الاسم - رقم الجواز" required></textarea>
                 </div>
 
                 <div class="section-title"><span>تفاصيل الوصول</span><span>Arrival</span></div>
                 <div class="form-grid">
-                    <div class="form-group"><label>موعد الوصول <span class="en-label">Arrival Time</span></label><input type="text" id="arrival_date" name="Arrival_Time" required></div>
-                    <div class="form-group"><label>رقم الرحلة <span class="en-label">Flight No</span></label><input type="text" name="Flight_No" required></div>
+                    <div class="form-group">
+                        <label>موعد الوصول <span class="en-label">Date & Time</span></label>
+                        <input type="text" id="arrival_date" name="موعد_الوصول" required>
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الرحلة <span class="en-label">Flight No</span></label>
+                        <input type="text" name="رقم_الرحلة" placeholder="SV 123" required>
+                    </div>
                 </div>
 
-                <div class="section-title"><span>التواصل</span><span>Contact</span></div>
+                <div class="section-title"><span>معلومات التواصل</span><span>Contact</span></div>
                 <div class="form-grid">
-                    <div class="form-group"><label>البريد <span class="en-label">Email</span></label><input type="email" name="Email" required></div>
-                    <div class="form-group"><label>الهاتف <span class="en-label">Phone</span></label><input type="tel" name="Phone" id="phoneInput" placeholder="+966..." required></div>
+                    <div class="form-group">
+                        <label>البريد الإلكتروني <span class="en-label">Email</span></label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>رقم هاتف التواصل <span class="en-label">Phone</span></label>
+                        <input type="tel" id="phoneInput" name="phone" placeholder="+966..." required>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-submit" id="submitBtn">تأكيد تسجيل الوفد | Confirm Registration</button>
@@ -157,18 +200,16 @@
             </form>
         </div>
 
-        <div id="successCard">
+        <div id="successCard" style="text-align: center;">
             <img src="logo2.png" alt="مجلس الشورى" class="logo-img">
             <div class="success-icon">✓</div>
             <div class="welcome-msg">تم تسجيل الوفد بنجاح</div>
-            
-            <div class="ref-container">الرقم المرجعي: <span id="refID">0000</span></div>
-
+            <div class="ref-container">الرقم المرجعي: <span id="refID"></span></div>
             <div class="sub-msg">
                 مجلس الشورى بالمملكة العربية السعودية يرحب بوفدكم الكريم<br>
                 ونتمنى لكم إقامة طيبة في بلدكم الثاني.
             </div>
-            <button type="button" class="btn-print" onclick="window.print()">🖨️ طباعة بطاقة التسجيل | Print Card</button>
+            <button type="button" class="btn-submit" style="background: #444; width: auto; padding: 15px 40px;" onclick="window.print()">🖨️ طباعة بطاقة التسجيل | Print Card</button>
         </div>
 
     </div>
@@ -177,28 +218,45 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-        flatpickr("#arrival_date", { enableTime: true, dateFormat: "Y-m-d H:i", time_24hr: true, minDate: "today" });
+        // دالة التحقق من الرمز السري (5263)
+        // تم استخدام تشفير بسيط لكي لا يظهر الرقم مباشرة في الكود
+        const _0x123 = "NTI2Mw=="; // هذا هو الرقم 5263 مشفراً بصيغة Base64
 
+        function checkCode() {
+            const codeInput = document.getElementById('passCode').value;
+            const errorDiv = document.getElementById('passError');
+            
+            if (btoa(codeInput) === _0x123) {
+                document.getElementById('accessGate').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                // تهيئة التقويم بعد ظهور الحقول
+                flatpickr("#arrival_date", { enableTime: true, dateFormat: "Y-m-d H:i", time_24hr: true, minDate: "today" });
+                window.scrollTo(0, 0);
+            } else {
+                errorDiv.style.display = 'block';
+                document.getElementById('passCode').value = '';
+            }
+        }
+
+        // منطق إرسال الاستمارة
         const form = document.getElementById("registrationForm");
-        const formContainer = document.getElementById("formContainer");
+        const formContainer = document.getElementById("mainContent");
         const successCard = document.getElementById("successCard");
-        const refDisplay = document.getElementById("refID");
-        const phoneInput = document.getElementById("phoneInput");
         const statusError = document.getElementById("status-error");
         const btn = document.getElementById("submitBtn");
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
+            
             if (!navigator.onLine) {
                 statusError.innerHTML = "خطأ: تأكد من اتصالك بالإنترنت.";
                 statusError.style.display = "block";
                 return;
             }
 
-            // استخراج آخر 4 أرقام من الجوال للرقم المرجعي
-            const phoneVal = phoneInput.value.replace(/\s/g, ''); // إزالة المسافات
-            const lastFour = phoneVal.slice(-4);
-            refDisplay.innerText = lastFour; // وضعها في البطاقة
+            // توليد الرقم المرجعي (آخر 4 أرقام من الهاتف)
+            const phone = document.getElementById("phoneInput").value;
+            document.getElementById("refID").innerText = phone.slice(-4);
 
             btn.disabled = true;
             btn.innerHTML = "جاري الإرسال... | Sending...";
@@ -206,14 +264,19 @@
 
             const data = new FormData(form);
             try {
-                const response = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+
                 if (response.ok) {
                     formContainer.style.display = "none";
                     successCard.style.display = "block";
                     window.scrollTo(0, 0);
                 } else { throw new Error(); }
             } catch (error) {
-                statusError.innerHTML = "حدث خطأ أثناء الإرسال. حاول ثانية.";
+                statusError.innerHTML = "حدث خطأ أثناء الإرسال. يرجى المحاولة ثانية.";
                 statusError.style.display = "block";
                 btn.disabled = false;
                 btn.innerHTML = "تأكيد تسجيل الوفد | Confirm Registration";
