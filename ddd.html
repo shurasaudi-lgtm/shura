@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الوفود - مجلس الشورى السعودي</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+    <style>
+        :root {
+            --primary-green: #1A5E32;
+            --gold-color: #c5a059;
+            --bg-color: #f0f2f0;
+            --white: #ffffff;
+            --error-red: #c53030;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0; padding: 20px; color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 850px; margin: 0 auto; background: var(--white);
+            padding: 30px 45px; border-radius: 8px;
+            border: 5px solid var(--primary-green);
+            box-shadow: inset 0 0 0 2px var(--gold-color), 0 15px 40px rgba(0,0,0,0.1);
+            text-align: right;
+        }
+
+        /* --- بوابة الدخول --- */
+        #accessGate { text-align: center; padding: 60px 20px; }
+        .pass-input {
+            width: 220px; padding: 15px; font-size: 1.8rem; text-align: center;
+            letter-spacing: 8px; border: 2px solid var(--gold-color);
+            border-radius: 10px; margin-bottom: 20px; outline: none;
+            background: #fdfdfd; font-weight: bold;
+        }
+
+        /* --- إخفاء المحتوى الافتراضي --- */
+        #mainContent, #successCard { display: none; }
+
+        .header-section { text-align: center; margin-bottom: 15px; }
+        .logo-img { max-width: 100%; width: 300px; height: auto; margin-bottom: 10px; }
+
+        .welcome-text h2 { color: var(--primary-green); margin-bottom: 2px; font-size: 1.7rem; font-weight: 700; }
+        .welcome-text p { color: #777; font-size: 0.95rem; margin-top: 0; margin-bottom: 15px; }
+
+        .section-title {
+            background-color: #f4f7f4; padding: 10px 15px; border-right: 5px solid var(--primary-green);
+            margin: 20px 0 15px; color: var(--primary-green); font-weight: 700;
+            display: flex; justify-content: space-between; font-size: 1.1rem;
+        }
+
+        .form-group { margin-bottom: 18px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        /* تنسيق اختيار الدولة مع العلم */
+        .country-wrapper { display: flex; align-items: center; gap: 12px; }
+        .flag-box { 
+            width: 55px; height: 38px; border: 1px solid #ddd; border-radius: 4px; 
+            display: flex; align-items: center; justify-content: center; 
+            background: #f9f9f9; overflow: hidden; flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .flag-box img { width: 100%; height: auto; display: none; }
+
+        label { display: block; margin-bottom: 5px; font-weight: 700; color: #444; }
+        .en-label { font-size: 0.8rem; color: #999; display: block; font-weight: 400; }
+
+        input, select, textarea {
+            width: 100%; padding: 12px; border: 1px solid var(--border-color);
+            border-radius: 5px; font-family: 'Tajawal', sans-serif; font-size: 1rem;
+            box-sizing: border-box; background-color: #fafafa;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary-green), #114022);
+            color: white; border: 1px solid var(--gold-color); padding: 18px; width: 100%;
+            font-size: 1.3rem; font-weight: 700; border-radius: 5px; cursor: pointer;
+            margin-top: 10px; transition: 0.3s;
+        }
+        .btn-submit:hover { background: var(--gold-color); transform: translateY(-2px); }
+
+        /* --- بطاقة النجاح --- */
+        .success-icon { font-size: 5rem; color: var(--gold-color); margin: 20px 0; }
+        .welcome-msg { color: var(--primary-green); font-size: 2rem; font-weight: 700; margin-bottom: 10px; }
+        .ref-container { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: #444; }
+        #refID { color: var(--error-red); border-bottom: 2px dashed var(--error-red); padding: 0 5px; }
+
+        footer { text-align: center; padding: 30px 20px; color: #888; font-size: 0.85rem; }
+
+        @media print {
+            .btn-submit, footer, .success-icon, #accessGate { display: none !important; }
+            .container { border: none; box-shadow: none; padding: 0; }
+            #successCard { display: block !important; }
+        }
+
+        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="accessGate">
+            <img src="logo.png" alt="مجلس الشورى" class="logo-img">
+            <h2 style="color: var(--primary-green)">نظام تسجيل الوفود</h2>
+            <p>يرجى إدخال رمز الدخول المخصص للمتابعة</p>
+            <input type="password" id="passCode" class="pass-input" placeholder="••••" maxlength="4">
+            <div id="passError" style="color: var(--error-red); display: none; margin-bottom: 15px; font-weight: bold;">الرمز غير صحيح، يرجى المحاولة ثانية</div>
+            <button type="button" onclick="checkCode()" class="btn-submit" style="width: 200px;">دخول</button>
+        </div>
+
+        <div id="mainContent">
+            <div class="header-section">
+                <img src="logo.png" alt="مجلس الشورى" class="logo-img">
+                <div class="welcome-text">
+                    <h2>استمارة تسجيل الوفود البرلمانية</h2>
+                    <p>Parliamentary Delegation Registration Form</p>
+                </div>
+            </div>
+
+            <form id="registrationForm" action="https://formspree.io/f/xojpedgz" method="POST">
+                <input type="text" name="_gotcha" style="display:none" />
+
+                <div class="section-title"><span>بيانات الدولة</span><span>Country</span></div>
+                <div class="form-group">
+                    <label>اسم الدولة <span class="en-label">Country Name</span></label>
+                    <div class="country-wrapper">
+                        <select id="countrySelect" name="اسم_الدولة" required onchange="updateCountryDetails()">
+                            <option value="">اختر الدولة...</option>
+                            <option value="الأردن" data-code="+962" data-iso="jo">الأردن - Jordan</option>
+                            <option value="الإمارات" data-code="+971" data-iso="ae">الإمارات - UAE</option>
+                            <option value="البحرين" data-code="+973" data-iso="bh">البحرين - Bahrain</option>
+                            <option value="تونس" data-code="+216" data-iso="tn">تونس - Tunisia</option>
+                            <option value="الجزائر" data-code="+213" data-iso="dz">الجزائر - Algeria</option>
+                            <option value="جزر القمر" data-code="+269" data-iso="km">جزر القمر - Comoros</option>
+                            <option value="جيبوتي" data-code="+253" data-iso="dj">جيبوتي - Djibouti</option>
+                            <option value="السعودية" data-code="+966" data-iso="sa">المملكة العربية السعودية - KSA</option>
+                            <option value="السودان" data-code="+249" data-iso="sd">السودان - Sudan</option>
+                            <option value="سوريا" data-code="+963" data-iso="sy">سوريا - Syria</option>
+                            <option value="الصومال" data-code="+252" data-iso="so">الصومال - Somalia</option>
+                            <option value="العراق" data-code="+964" data-iso="iq">العراق - Iraq</option>
+                            <option value="عمان" data-code="+968" data-iso="om">سلطنة عمان - Oman</option>
+                            <option value="فلسطين" data-code="+970" data-iso="ps">فلسطين - Palestine</option>
+                            <option value="قطر" data-code="+974" data-iso="qa">قطر - Qatar</option>
+                            <option value="الكويت" data-code="+965" data-iso="kw">الكويت - Kuwait</option>
+                            <option value="لبنان" data-code="+961" data-iso="lb">لبنان - Lebanon</option>
+                            <option value="ليبيا" data-code="+218" data-iso="ly">ليبيا - Libya</option>
+                            <option value="مصر" data-code="+20" data-iso="eg">مصر - Egypt</option>
+                            <option value="المغرب" data-code="+212" data-iso="ma">المغرب - Morocco</option>
+                            <option value="موريتانيا" data-code="+222" data-iso="mr">موريتانيا - Mauritania</option>
+                            <option value="اليمن" data-code="+967" data-iso="ye">اليمن - Yemen</option>
+                        </select>
+                        <div class="flag-box" id="flagContainer">
+                            <img id="countryFlag" src="" alt="Flag">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title"><span>رئيس الوفد</span><span>Head of Delegation</span></div>
+                <div class="form-group">
+                    <label>الاسم الكامل <span class="en-label">Full Name</span></label>
+                    <input type="text" name="اسم_رئيس_الوفد" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم الجواز <span class="en-label">Passport Number</span></label>
+                    <input type="text" name="جواز_رئيس_الوفد" style="max-width:250px" required>
+                </div>
+
+                <div class="section-title"><span>الوفد المرافق</span><span>Delegation Members</span></div>
+                <div class="form-group">
+                    <label>عدد المرافقين <span class="en-label">Number of Members</span></label>
+                    <input type="number" name="عدد_المرافقين" min="0" style="max-width:150px" required>
+                </div>
+                <div class="form-group">
+                    <label>الأسماء وأرقام الجوازات <span class="en-label">Full Names & Passports</span></label>
+                    <textarea name="قائمة_المرافقين" rows="4" required placeholder="يرجى كتابة الأسماء وأرقام الجوازات لكل عضو..."></textarea>
+                </div>
+
+                <div class="section-title"><span>تفاصيل الوصول</span><span>Arrival Details</span></div>
+                <div class="form-grid">
+                    <div class="form-group"><label>موعد الوصول <span class="en-label">Arrival Time</span></label><input type="text" id="arrival_date" name="موعد_الوصول" required></div>
+                    <div class="form-group"><label>رقم الرحلة <span class="en-label">Flight Number</span></label><input type="text" name="رقم_الرحلة" required></div>
+                </div>
+
+                <div class="section-title"><span>معلومات التواصل</span><span>Contact Info</span></div>
+                <div class="form-grid">
+                    <div class="form-group"><label>البريد الإلكتروني <span class="en-label">Email</span></label><input type="email" name="email" required></div>
+                    <div class="form-group">
+                        <label>رقم الهاتف <span class="en-label">Phone Number</span></label>
+                        <input type="tel" id="phoneInput" name="phone" placeholder="+..." required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">تأكيد تسجيل الوفد | Confirm Registration</button>
+            </form>
+        </div>
+
+        <div id="successCard" style="text-align: center;">
+            <img src="logo2.png" alt="مجلس الشورى" class="logo-img">
+            <div class="success-icon">✓</div>
+            <div class="welcome-msg">تم تسجيل الوفد بنجاح</div>
+            <div class="ref-container">الرقم المرجعي: <span id="refID"></span></div>
+            <div style="color: #555; font-size: 1.2rem; margin-bottom: 30px; line-height: 1.8;">
+                مجلس الشورى بالمملكة العربية السعودية يرحب بوفدكم الكريم<br>
+                ونتمنى لكم إقامة طيبة في بلدكم الثاني.
+            </div>
+            <button type="button" class="btn-submit" style="background: #444; width: auto; padding: 15px 40px;" onclick="window.print()">🖨️ طباعة بطاقة التسجيل | Print Registration Card</button>
+        </div>
+
+    </div>
+
+    <footer>جميع الحقوق محفوظة &copy; 2026 مجلس الشورى السعودي</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // وظيفة تحديث العلم والمفتاح الهاتفي تلقائياً
+        function updateCountryDetails() {
+            const select = document.getElementById('countrySelect');
+            const phoneInput = document.getElementById('phoneInput');
+            const flagImg = document.getElementById('countryFlag');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            const code = selectedOption.getAttribute('data-code');
+            const iso = selectedOption.getAttribute('data-iso');
+
+            // تحديث الكود الهاتفي دون القفز للخانة
+            if (code) {
+                phoneInput.value = code + " ";
+            }
+
+            // تحديث العلم من مكتبة flagcdn
+            if (iso) {
+                flagImg.src = `https://flagcdn.com/w80/${iso}.png`;
+                flagImg.style.display = 'block';
+            } else {
+                flagImg.style.display = 'none';
+            }
+        }
+
+        // بوابة الدخول (الرمز: 5263)
+        const _0x123 = "NTI2Mw=="; 
+        function checkCode() {
+            const codeInput = document.getElementById('passCode').value;
+            const errorDiv = document.getElementById('passError');
+            if (btoa(codeInput) === _0x123) {
+                document.getElementById('accessGate').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                // تفعيل اختيار الوقت والتاريخ
+                flatpickr("#arrival_date", { enableTime: true, dateFormat: "Y-m-d H:i", time_24hr: true, minDate: "today" });
+                window.scrollTo(0, 0);
+            } else {
+                errorDiv.style.display = 'block';
+                document.getElementById('passCode').value = '';
+            }
+        }
+
+        // معالجة إرسال النموذج
+        const form = document.getElementById("registrationForm");
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            // استخراج الرقم المرجعي من آخر 4 أرقام من الجوال
+            const phone = document.getElementById("phoneInput").value.trim();
+            document.getElementById("refID").innerText = phone.slice(-4);
+            
+            const btn = document.getElementById("submitBtn");
+            btn.disabled = true;
+            btn.innerHTML = "جاري الإرسال...";
+            
+            const data = new FormData(form);
+            try {
+                const response = await fetch(form.action, { 
+                    method: 'POST', 
+                    body: data, 
+                    headers: { 'Accept': 'application/json' } 
+                });
+                if (response.ok) {
+                    document.getElementById("mainContent").style.display = "none";
+                    document.getElementById("successCard").style.display = "block";
+                    window.scrollTo(0, 0);
+                } else { throw new Error(); }
+            } catch (error) {
+                alert("حدث خطأ أثناء الإرسال، يرجى المحاولة مرة أخرى.");
+                btn.disabled = false;
+                btn.innerHTML = "تأكيد تسجيل الوفد | Confirm Registration";
+            }
+        });
+    </script>
+</body>
+</html>
